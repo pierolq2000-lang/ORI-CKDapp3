@@ -21,27 +21,23 @@ if 'calculated' not in st.session_state:
 
 # --- TITLE ---
 st.title('Oral Health Index & CKD Risk Calculator')
-st.text('This calculator estimates the percentage risk by which a patient’s oral health status may contribute to the development or progression of chronic kidney disease (CKD).')
 
 # --- PATIENT SECTION ---
-with st.container(border=True):
-    st.header("Patient")
-    xer = st.selectbox("Xerostomia:", list(xerop.keys()), help="Subjective feeling of dry mouth")
-    med = st.selectbox("Medications causing dry mouth:", list(medop.keys()), help="Diuretics or Antihypertensives")
-    diab = st.selectbox("Diabetes:", list(diabop.keys()), help="Either Type 1 or 2")
+st.header("Patient")
+xer = st.selectbox("Xerostomia:", list(xerop.keys()))
+med = st.selectbox("Medications causing dry mouth:", list(medop.keys()))
+diab = st.selectbox("Diabetes:", list(diabop.keys()))
 
 # --- DENTAL EXAM SECTION ---
-with st.container(border=True):
-    st.header("Dental Exam")
-    hal = st.selectbox("Halitosis:", list(halop.keys()), help="Unpleasant mouth odor")
-    cand = st.selectbox("Candidiasis:", list(candop.keys()), help="A fungal infection (Candida Albicans)")
-    tongue = st.selectbox("Tongue Fissuring / Scrotal Tongue:", list(lendop.keys()), help="Grooves or cracks on tongue surface")
-    per = st.selectbox("Periodontal Disease:", list(perdop.keys()), help="Disease of gums and supporting bone")
+st.header("Dental Exam")
+hal = st.selectbox("Halitosis:", list(halop.keys()))
+cand = st.selectbox("Candidiasis:", list(candop.keys()))
+tongue = st.selectbox("Tongue Fissuring / Scrotal Tongue:", list(lendop.keys()))
+per = st.selectbox("Periodontal Disease:", list(perdop.keys()))
 
 # --- CKD SECTION ---
-with st.container(border=True):
-    st.header("CKD")
-    ckd = st.selectbox("CKD Stage:", list(ckdop.keys()), help="Severity of kidney disease (based on GFR)")
+st.header("CKD")
+ckd = st.selectbox("CKD Stage:", list(ckdop.keys()))
 
 # --- CALCULATION LOGIC ---
 def calculate_risk():
@@ -53,7 +49,6 @@ def calculate_risk():
 
 # --- RESULTS SECTION AT THE END ---
 st.divider()
-
 st.header("Calculator Results")
 
 if st.button("Calculate Risk Score", use_container_width=True):
@@ -62,16 +57,17 @@ if st.button("Calculate Risk Score", use_container_width=True):
 if st.session_state.calculated:
     points = st.session_state.total_points
 
+    # Plain text results (no colors)
     if points <= 3:
-        st.success(f"## Low Risk\nScore: {points}")
+        st.write(f"### Low Risk\nScore: {points}")
     elif 4 <= points <= 6:
-        st.warning(f"## Moderate Risk\nScore: {points}")
+        st.write(f"### Moderate Risk\nScore: {points}")
     else:
-        st.error(f"## High Risk\nScore: {points}")
+        st.write(f"### High Risk\nScore: {points}")
 
     if points >= 4:
         st.write("---")
-        st.button("📤 Share Results", use_container_width=True, help="Sharing feature coming soon")
+        st.button("📤 Share Results", use_container_width=True)
 
 else:
-    st.markdown('<p style="color: gray;"><i>Waiting for calculation...</i></p>', unsafe_allow_html=True)
+    st.write("*Waiting for calculation...*")
